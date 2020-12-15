@@ -16,7 +16,7 @@ BigInteger::BigInteger(std::vector<unsigned char>& data, bool negative) {
 BigInteger::BigInteger(const BigInteger& other) {
     std::copy(other.data.begin(), other.data.end(),
                   std::back_inserter(data));
-    this->is_negative = other.is_negative;
+    is_negative = other.is_negative;
 }
 
 BigInteger::BigInteger(BigInteger&& other) noexcept {
@@ -30,7 +30,7 @@ BigInteger::BigInteger(BigInteger&& other) noexcept {
 BigInteger& BigInteger::operator=(const BigInteger& other) {
     std::copy(other.data.begin(), other.data.end(),
                   std::back_inserter(data));
-    this->is_negative = other.is_negative;
+    is_negative = other.is_negative;
 
     return *this;
 }

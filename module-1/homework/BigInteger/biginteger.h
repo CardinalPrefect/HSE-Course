@@ -8,13 +8,6 @@ public:
 
     BigInteger(int num);
 
-    // to-do Конструктор копирования
-    // to-do Конструктор присваивания
-    // to-do оператор копирования
-    // to-do оператор присваивания
-    // to-do Конструирования из int
-    // to-do преобразование в bool
-
     BigInteger(const BigInteger& other);
 
     BigInteger(BigInteger&& other) noexcept;
@@ -87,21 +80,3 @@ private:
     const unsigned char base = 100;
     bool is_negative = false;
 };
-
-//bool operator==(const BigInteger& lhs, const BigInteger& rhs);
-
-//bool operator!=(const BigInteger& lhs, const BigInteger& rhs);
-
-//bool operator<(const BigInteger& lhs, const BigInteger& rhs);
-
-//bool operator>(const BigInteger& lhs, const BigInteger& rhs);
-
-//bool operator<=(const BigInteger& lhs, const BigInteger& rhs);
-
-//bool operator>=(const BigInteger& lhs, const BigInteger& rhs);
-
-//to-do <<
-//to-do >>
-
-
-
