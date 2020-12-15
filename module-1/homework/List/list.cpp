@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-//#include <list>
 
 using namespace task;
 
@@ -230,22 +229,3 @@ void list::sort() {
     for (int& d: values)
         push_back(d);
 }
-
-//int main() {
-//    task::list l;
-//    std::vector<int> a = {0, 0, 0, 1, 0, 0, 1, 0, 3, 3};
-
-//    for (auto i: a)
-//        l.push_back(i);
-
-//    l.remove(l.front());
-
-//    Node* x = l.head;
-
-//    while (x) {
-//        std::cout << x->value << std::endl;
-//        x = x->next;
-//    }
-
-//    return 0;
-//}

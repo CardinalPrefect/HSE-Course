@@ -21,7 +21,7 @@ public:
     }
 
     ~Node() { }
-//private:
+private:
     int value = 0;
     Node* prev = nullptr;
     Node* next = nullptr;
@@ -68,7 +68,7 @@ public:
     void unique();
     void sort();
 
-//private:
+private:
     Node* head = nullptr;
     Node* tail = nullptr;
     std::size_t list_size = 0;
