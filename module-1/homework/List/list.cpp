@@ -97,7 +97,7 @@ void list::clear() {
 }
 
 void list::push_back(const int& value) {
-    if (list_size == 0)
+    if (empty())
         head = tail = new Node(value, nullptr, nullptr);
     else {
         tail->push_back(new Node(value, tail, nullptr));
@@ -121,7 +121,7 @@ void list::pop_back() {
 }
 
 void list::push_front(const int& value) {
-    if (list_size == 0)
+    if (empty())
         head = tail = new Node(value, nullptr, nullptr);
     else {
         head->push_front(new Node(value, nullptr, head));
