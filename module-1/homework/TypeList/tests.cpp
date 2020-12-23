@@ -4,6 +4,7 @@
 #include <string>
 
 #include "typelist/append.h"
+#include "typelist/erase.h"
 #include "typelist/eraseall.h"
 #include "typelist/indexof.h"
 #include "typelist/length.h"
