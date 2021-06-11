@@ -5,7 +5,6 @@
 #include <vector>
 
 namespace task {
-
 template <typename T>
 class Node {
 public:
@@ -131,7 +130,6 @@ private:
         using difference_type = ptrdiff_t;
         using iterator_category = std::bidirectional_iterator_tag;
 
-
         explicit Iterator(Node<T>* node) : node_(node) {
         }
 
@@ -224,7 +222,6 @@ List<T, Allocator>& List<T, Allocator>::operator=(const List& other) {
     if (std::allocator_traits<allocator_type>::propagate_on_container_copy_assignment::value)
         alloc_ = other.alloc_;
 
-   
     for (Node<T>* x = other.head_; x != other.tail_; x = x->next)
         PushBack(x->value);
 
@@ -257,7 +254,6 @@ List<T, Allocator>& List<T, Allocator>::operator=(List<T, Allocator>&& other) no
         other.head_ = other.tail_ = x;
         other.list_size_ = 0;
         
-
     } else {
         for (Node<T>* x = other.head_; x != other.tail_; x = x->next)
             PushBack(std::move(x->value));
@@ -378,14 +374,12 @@ void List<T, Allocator>::EmplaceBack(Args&&... args) {
     Node<T>* x = alloc_.allocate(1);
     alloc_.construct(x, tail_->prev, tail_, std::forward<Args>(args)...);
 
-
     if (head_ == tail_) {
         head_ = x;
     } else {
         x->prev->next = x;
     }
     tail_->prev = x;
-    
     ++list_size_;
 }
 
@@ -508,8 +502,6 @@ void List<T, Allocator>::Remove(const T& value) {
             delx = nullptr;
         }
     }
-
-
 }
 
 template <typename T, typename Allocator>
