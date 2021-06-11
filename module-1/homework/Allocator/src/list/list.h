@@ -253,7 +253,6 @@ List<T, Allocator>& List<T, Allocator>::operator=(List<T, Allocator>&& other) no
         alloc_.construct(x, nullptr, nullptr, T());
         other.head_ = other.tail_ = x;
         other.list_size_ = 0;
-        
     } else {
         for (Node<T>* x = other.head_; x != other.tail_; x = x->next)
             PushBack(std::move(x->value));
