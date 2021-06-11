@@ -42,11 +42,8 @@ public:
         return static_cast<pointer>(arena_) + (*arena_offset_ - n);
     }
 
-    void deallocate(T* p, size_t n) {
-        // NOLINT
-        // Your code goes here
-
-    };
+    void deallocate(T*, size_t) { //NOLINT
+    }
 
     template <typename... Args>
     void construct(pointer p, Args&&... args) {  // NOLINT
