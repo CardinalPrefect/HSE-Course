@@ -42,7 +42,7 @@ public:
         return static_cast<pointer>(arena_) + (*arena_offset_ - n);
     }
 
-    void deallocate(T*, size_t) { //NOLINT
+    void deallocate(T*, size_t) {  // NOLINT
     }
 
     template <typename... Args>
