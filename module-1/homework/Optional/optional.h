@@ -29,14 +29,12 @@ public:
 
     template <typename... Args>
     constexpr OptionalBase(InPlace, Args&&... args)  // NOLINT
-        : value_(std::forward<Args>(args)...), 
-          is_none_(false) {
+        : value_(std::forward<Args>(args)...), is_none_(false) {
     }
 
     template <typename U = T>
     constexpr OptionalBase(U&& value)  // NOLINT
-        : value_(std::forward<U>(value)),
-          is_none_(false) {
+        : value_(std::forward<U>(value)), is_none_(false) {
     }
 
 protected:
@@ -70,14 +68,12 @@ public:
 
     template <typename... Args>
     constexpr OptionalBase(InPlace, Args&&... args)  // NOLINT
-        : value_(std::forward<Args>(args)...),
-          is_none_(false) {
+        : value_(std::forward<Args>(args)...), is_none_(false) {
     }
 
     template <typename U = T>
     constexpr OptionalBase(U&& value)  // NOLINT
-        : value_(std::forward<U>(value)),
-          is_none_(false) {
+        : value_(std::forward<U>(value)), is_none_(false) {
     }
 
     ~OptionalBase() {
@@ -225,7 +221,7 @@ constexpr Optional<T>::operator bool() const noexcept {
 }
 
 template <typename T>
-constexpr std::add_pointer_t<const typename Optional<T>::value_type> Optional<T>::operator->() 
+constexpr std::add_pointer_t<const typename Optional<T>::value_type> Optional<T>::operator->()
     const {
     return base::value_;
 }
