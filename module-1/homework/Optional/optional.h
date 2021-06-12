@@ -23,18 +23,18 @@ public:
     constexpr OptionalBase() {
     }
 
-    constexpr OptionalBase(NullOpt) // NOLINT
+    constexpr OptionalBase(NullOpt)  // NOLINT
     {
     }
 
     template <typename... Args>
-    constexpr OptionalBase(InPlace, Args&&... args) // NOLINT
+    constexpr OptionalBase(InPlace, Args&&... args)  // NOLINT
         : value_(std::forward<Args>(args)...), 
           is_none_(false) {
     }
 
     template <typename U = T>
-    constexpr OptionalBase(U&& value) // NOLINT
+    constexpr OptionalBase(U&& value)  // NOLINT
         : value_(std::forward<U>(value)),
           is_none_(false) {
     }
@@ -64,18 +64,18 @@ public:
     constexpr OptionalBase() {
     }
 
-    constexpr OptionalBase(NullOpt) // NOLINT
+    constexpr OptionalBase(NullOpt)  // NOLINT
     {
     }
 
     template <typename... Args>
-    constexpr OptionalBase(InPlace, Args&&... args) // NOLINT
+    constexpr OptionalBase(InPlace, Args&&... args)  // NOLINT
         : value_(std::forward<Args>(args)...),
           is_none_(false) {
     }
 
     template <typename U = T>
-    constexpr OptionalBase(U&& value) // NOLINT
+    constexpr OptionalBase(U&& value)  // NOLINT
         : value_(std::forward<U>(value)),
           is_none_(false) {
     }
