@@ -6,21 +6,115 @@
 namespace task {
 
 struct NullOpt {
-    // Your code goes here;
+    explicit constexpr NullOpt(int) {
+    }
 };
 
-constexpr NullOpt kNullOpt = // Your code goes here;
-
+constexpr NullOpt kNullOpt = NullOpt(0);
 struct InPlace {
-    // Your code goes here;
+    explicit InPlace() = default;
 };
 
-constexpr InPlace kInPlace =  //Your code goes here;
+constexpr InPlace kInPlace = InPlace();
+
+template <typename T, bool>
+class OptionalBase {
+public:
+    constexpr OptionalBase() {
+    }
+
+    constexpr OptionalBase(NullOpt) { // NOLINT
+    }
+
+    template <typename... Args>
+    constexpr OptionalBase(InPlace, Args&&... args) 
+        : value_(std::forward<Args>(args)...), 
+          is_none_(false) {
+    }
+
+    template <typename U = T>
+    constexpr OptionalBase(U&& value) 
+        : value_(std::forward<U>(value)),
+          is_none_(false) {
+    }
+
+protected:
+    template <typename U = T>
+    void Set(U&& value) {
+        value_ = std::forward<U>(value);
+        is_none_ = false;
+    }
+
+    void Reset() {
+        is_none_ = true;
+    }
+
+    union {
+        T value_;
+        char none_;
+    };
+
+    bool is_none_ = true;
+};
 
 template <typename T>
-class Optional : public // Your code goes here; {
+class OptionalBase<T, false> {
 public:
-    using value_type =  // Your code goes here;
+    constexpr OptionalBase() {
+    }
+
+    constexpr OptionalBase(NullOpt) { // NOLINT
+    }
+
+    template <typename... Args>
+    constexpr OptionalBase(InPlace, Args&&... args)
+        : value_(std::forward<Args>(args)...),
+          is_none_(false) {
+    }
+
+    template <typename U = T>
+    constexpr OptionalBase(U&& value) 
+        : value_(std::forward<U>(value)),
+          is_none_(false) {
+    }
+
+    ~OptionalBase() {
+        if (!is_none_) {
+            value_.~T();
+        }
+    }
+
+protected:
+    template <typename U = T>
+    void Set(U&& value) {
+        if (!is_none_) {
+            value_.~T();
+        }
+        value_ = std::forward<U>(value);
+        is_none_ = false;
+    }
+
+    void Reset() {
+        if (!is_none_) {
+            value_.~T();
+        }
+        is_none_ = true;
+    }
+
+    union {
+        T value_;
+        char none_;
+    };
+
+    bool is_none_ = true;
+};
+
+template <typename T>
+class Optional : public OptionalBase<T, std::is_trivially_destructible_v<T>> {
+private:
+    using base = OptionalBase<T, std::is_trivially_destructible<T>::value>;
+public:
+    using value_type = T;
 
     constexpr Optional() noexcept;
 
@@ -61,4 +155,99 @@ public:
 
     constexpr value_type&& operator*() &&;
 };
+
+template <typename T>
+constexpr Optional<T>::Optional() noexcept {
+}
+
+template <typename T>
+template <typename U>
+constexpr Optional<T>::Optional(U&& value) : base(std::forward<U>(value)) {
+}
+
+template <typename T>
+constexpr Optional<T>::Optional(NullOpt) noexcept {
+}
+
+template <typename T>
+template <typename... Args>
+constexpr Optional<T>::Optional(InPlace, Args&&... args)
+    : base{kInPlace, std::forward<Args>(args)...} {
+}
+
+template <typename T>
+Optional<T>& Optional<T>::operator=(NullOpt) noexcept {
+    base::Reset();
+    return *this;
+}
+
+template <typename T>
+template <typename U>
+Optional<T>& Optional<T>::operator=(U&& value) {
+    base::Set(std::forward<U>(value));
+    return *this;
+}
+
+template <typename T>
+void Optional<T>::Reset() noexcept {
+    base::Reset();
+}
+
+template <typename T>
+template <typename U>
+constexpr T Optional<T>::ValueOr(U&& default_value) const& {
+    if (!base::is_none_) {
+        return base::value_;
+    }
+    return default_value;
+}
+
+template <typename T>
+template <typename U>
+constexpr T Optional<T>::ValueOr(U&& default_value) && {
+    if (!base::is_none_) {
+        return base::value_;
+    }
+    return default_value;
+}
+
+template <typename T>
+constexpr bool Optional<T>::HasValue() const noexcept {
+    return !base::is_none_;
+}
+
+template <typename T>
+constexpr Optional<T>::operator bool() const noexcept {
+    return HasValue();
+}
+
+template <typename T>
+constexpr std::add_pointer_t<const typename Optional<T>::value_type> Optional<T>::operator->() const {
+    return base::value_;
+}
+
+template <typename T>
+constexpr std::add_pointer_t<typename Optional<T>::value_type> Optional<T>::operator->() {
+    return &(base::value_);
+}
+
+template <typename T>
+constexpr const typename Optional<T>::value_type& Optional<T>::operator*() const& {
+    return base::value_;
+}
+
+template <typename T>
+constexpr typename Optional<T>::value_type& Optional<T>::operator*() & {
+    return base::value_;
+}
+
+template <typename T>
+constexpr const typename Optional<T>::value_type&& Optional<T>::operator*() const&& {
+    return std::move(base::value_);
+}
+
+template <typename T>
+constexpr typename Optional<T>::value_type&& Optional<T>::operator*() && {
+    return std::move(base::value_);
+}
 }  // namespace task
