@@ -6,17 +6,15 @@ class CustomAllocator {
 public:
     template <typename U>
     struct rebind {  // NOLINT
-        // Your code goes here
-        typedef CustomAllocator<U> other;
+        using other = CustomAllocator<U>;
     };
-    // Your code goes here
     using value_type = T;
     using pointer = T*;
     using const_pointer = const T*;
     using reference = T&;
     using const_reference = const T&;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
+    using size_type = size_t;
+    using difference_type = ptrdiff_t;
 
     // Influence on container operations
     using propagate_on_container_move_assignment = std::false_type;
@@ -32,7 +30,6 @@ public:
     explicit CustomAllocator(const CustomAllocator<U>& other) noexcept;
 
     T* allocate(size_t n) {  // NOLINT
-        // Your code goes here
         if (*arena_offset_ + n > ARENA_BASIC_SIZE) {
             throw std::runtime_error("Allocator's arena is full");
         }
@@ -47,12 +44,10 @@ public:
 
     template <typename... Args>
     void construct(pointer p, Args&&... args) {  // NOLINT
-        // Your code goes here
         ::new (p) value_type(std::forward<Args>(args)...);
     };
 
     void destroy(pointer p) {  // NOLINT
-        // Your code goes here
         p->~T();
     };
 
@@ -74,7 +69,6 @@ public:
     friend bool operator!=(const CustomAllocator<K>& lhs, const CustomAllocator<U>& rhs) noexcept;
 
 private:
-    // Your code goes here
     static const size_t ARENA_BASIC_SIZE = 65536;
     void* arena_ = nullptr;
     size_t* arena_offset_ = nullptr;
@@ -117,12 +111,10 @@ CustomAllocator<T>::CustomAllocator(const CustomAllocator<U>& other) noexcept
 
 template <typename T, typename U>
 bool operator==(const CustomAllocator<T>& lhs, const CustomAllocator<U>& rhs) noexcept {
-    // Your code goes here
     return lhs.arena_ == rhs.arena_;
 }
 
 template <typename T, typename U>
 bool operator!=(const CustomAllocator<T>& lhs, const CustomAllocator<U>& rhs) noexcept {
-    // Your code goes here
     return lhs.arena_ != rhs.arena_;
 }
