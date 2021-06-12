@@ -84,9 +84,9 @@ CustomAllocator<T>::CustomAllocator() {
 
 template <typename T>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator& other) noexcept
-    : arena_(other.arena_),
-      arena_offset_(other.arena_offset_),
-      allocators_count_(other.allocators_count_) {
+    : arena_{other.arena_},
+      arena_offset_{other.arena_offset_},
+      allocators_count_{other.allocators_count_} {
     ++(*allocators_count_);
 }
 
@@ -103,9 +103,9 @@ CustomAllocator<T>::~CustomAllocator() {
 template <typename T>
 template <typename U>
 CustomAllocator<T>::CustomAllocator(const CustomAllocator<U>& other) noexcept
-    : arena_(other.get_arena()),
-      arena_offset_(other.get_arena_offset()),
-      allocators_count_(other.get_allocators_count()) {
+    : arena_{other.get_arena()},
+      arena_offset_{other.get_arena_offset()},
+      allocators_count_{other.get_allocators_count()} {
     ++(*allocators_count_);
 }
 
