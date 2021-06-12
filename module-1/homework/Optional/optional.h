@@ -23,17 +23,18 @@ public:
     constexpr OptionalBase() {
     }
 
-    constexpr OptionalBase(NullOpt) { // NOLINT
+    constexpr OptionalBase(NullOpt) // NOLINT
+    {
     }
 
     template <typename... Args>
-    constexpr OptionalBase(InPlace, Args&&... args) 
+    constexpr OptionalBase(InPlace, Args&&... args) // NOLINT
         : value_(std::forward<Args>(args)...), 
           is_none_(false) {
     }
 
     template <typename U = T>
-    constexpr OptionalBase(U&& value) 
+    constexpr OptionalBase(U&& value) // NOLINT
         : value_(std::forward<U>(value)),
           is_none_(false) {
     }
@@ -63,17 +64,18 @@ public:
     constexpr OptionalBase() {
     }
 
-    constexpr OptionalBase(NullOpt) { // NOLINT
+    constexpr OptionalBase(NullOpt) // NOLINT
+    {
     }
 
     template <typename... Args>
-    constexpr OptionalBase(InPlace, Args&&... args)
+    constexpr OptionalBase(InPlace, Args&&... args) // NOLINT
         : value_(std::forward<Args>(args)...),
           is_none_(false) {
     }
 
     template <typename U = T>
-    constexpr OptionalBase(U&& value) 
+    constexpr OptionalBase(U&& value) // NOLINT
         : value_(std::forward<U>(value)),
           is_none_(false) {
     }
@@ -113,6 +115,7 @@ template <typename T>
 class Optional : public OptionalBase<T, std::is_trivially_destructible_v<T>> {
 private:
     using base = OptionalBase<T, std::is_trivially_destructible<T>::value>;
+
 public:
     using value_type = T;
 
@@ -222,7 +225,8 @@ constexpr Optional<T>::operator bool() const noexcept {
 }
 
 template <typename T>
-constexpr std::add_pointer_t<const typename Optional<T>::value_type> Optional<T>::operator->() const {
+constexpr std::add_pointer_t<const typename Optional<T>::value_type> Optional<T>::operator->() 
+    const {
     return base::value_;
 }
 
