@@ -95,7 +95,7 @@ const static std::size_t kNotFound = -1;
 const static std::size_t kAmbiguity = kNotFound - 1;
 
 constexpr std::size_t ProcessBackward(std::size_t i, std::size_t res, const bool* found,
-        const bool* found_convertible) {
+                                      const bool* found_convertible) {
     if (res == kAmbiguity) {
         return res;
     }
@@ -116,12 +116,12 @@ constexpr std::size_t ProcessBackward(std::size_t i, std::size_t res, const bool
 
 template <std::size_t SizeofFound>
 constexpr std::size_t ProcessForward(std::size_t currnet, const bool (&found)[SizeofFound],
-        const bool (&convertible)[SizeofFound]) {
+                                     const bool (&convertible)[SizeofFound]) {
     if (currnet == SizeofFound) {
         return kNotFound;
     }
     return ProcessBackward(currnet, ProcessForward(currnet + 1, found, convertible), found, 
-            convertible);
+                           convertible);
 }
 
 template <typename TargetType, typename... Type>
