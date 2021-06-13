@@ -120,7 +120,7 @@ constexpr std::size_t ProcessForward(std::size_t currnet, const bool (&found)[Si
     if (currnet == SizeofFound) {
         return kNotFound;
     }
-    return ProcessBackward(currnet, ProcessForward(currnet + 1, found, convertible), found, 
+    return ProcessBackward(currnet, ProcessForward(currnet + 1, found, convertible), found,
                            convertible);
 }
 
