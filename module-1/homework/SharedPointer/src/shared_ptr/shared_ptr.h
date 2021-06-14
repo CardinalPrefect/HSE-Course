@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../control/control.h"
-#include <memory>
 
 template <typename T>
 struct GetPureType {
@@ -139,7 +138,8 @@ SharedPtr<T>::SharedPtr(const SharedPtr& other) noexcept
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept : value_{other.value_}, counter_{other.counter_} {
+SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept 
+        : value_{other.value_}, counter_{other.counter_} {
     other.value_ = nullptr;
     other.counter_ = nullptr;
 }
