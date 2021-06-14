@@ -94,7 +94,7 @@ struct AssignUnion {
 const static int16_t kNotFound{-1};
 const static int16_t kAmbiguity{kNotFound - 1};
 
-constexpr size_t ProcessBackward(size_t i, size_t res, const bool* found,
+constexpr size_t ProcessBackward(size_t i, int16_t res, const bool* found,
                                       const bool* found_convertible) {
     if (res == kAmbiguity) {
         return res;
