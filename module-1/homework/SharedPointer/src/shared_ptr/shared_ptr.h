@@ -133,7 +133,8 @@ SharedPtr<T>::SharedPtr(Y* p, Deleter) noexcept
 
 template <typename T>
 SharedPtr<T>::SharedPtr(const SharedPtr& other) noexcept
-    : value_{other.value_}, counter_{other.counter_} {
+    : value_{other.value_},
+      counter_{other.counter_} {
     counter_->Add();
 }
 
@@ -305,7 +306,8 @@ WeakPtr<T>::WeakPtr(const SharedPtr<Y>& other) : value_{other.value_}, counter_{
 
 template <typename T>
 WeakPtr<T>::WeakPtr(const WeakPtr& other) noexcept
-        : value_{other.value_}, counter_{other.counter_} {
+        : value_{other.value_},
+          counter_{other.counter_} {
     counter_->AddWeak();
 }
 
