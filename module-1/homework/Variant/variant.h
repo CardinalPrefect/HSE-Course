@@ -24,21 +24,21 @@ struct TypeAt<Idx, TypeList<Head, Tail...>> {
     using result = typename TypeAt<Idx - 1, TypeList<Tail...>>::result;
 };
 
-template <std::size_t I>
+template <size_t I>
 struct InPlaceIndex {
     explicit InPlaceIndex() = default;
 };
 
-template <std::size_t I>
+template <size_t I>
 constexpr InPlaceIndex<I> kInPlaceIndex{};
 
-template <std::size_t Idx, typename... Type>
+template <size_t Idx, typename... Type>
 union Union;
 
-template <std::size_t Idx>
+template <size_t Idx>
 union Union<Idx> {};
 
-template <std::size_t Idx, typename T, typename... Type>
+template <size_t Idx, typename T, typename... Type>
 union Union<Idx, T, Type...> {
 public:
     Union() : tail() {
@@ -66,35 +66,35 @@ struct UnionHelper {
         return std::forward<U>(v).head;
     }
 
-    template <typename U, std::size_t Idx>
+    template <typename U, size_t Idx>
     static constexpr auto&& GetAlt(U&& v, InPlaceIndex<Idx>) {
         return GetAlt(std::forward<U>(v).tail, kInPlaceIndex<Idx - 1>);
     }
 };
 
 struct VariantHelper {
-    template <std::size_t Idx, typename T>
+    template <size_t Idx, typename T>
     static constexpr auto&& GetAlt(T&& v) {
         return UnionHelper::GetAlt(std::forward<T>(v).data_, kInPlaceIndex<Idx>);
     }
 };
 
 struct AssignUnion {
-    template <std::size_t Idx, typename U, std::size_t UnIdx, typename Head, typename... Tail>
+    template <size_t Idx, typename U, size_t UnIdx, typename Head, typename... Tail>
     static void AssignHelper(U&& value, InPlaceIndex<0>, Union<UnIdx, Head, Tail...>& u) {
         u.head = value;
     }
 
-    template <std::size_t Idx, typename U, std::size_t UnIdx, typename Head, typename... Tail>
+    template <size_t Idx, typename U, size_t UnIdx, typename Head, typename... Tail>
     static void AssignHelper(U&& value, InPlaceIndex<Idx>, Union<UnIdx, Head, Tail...>& u) {
         AssignUnion::AssignHelper<Idx - 1>(std::forward<U>(value), kInPlaceIndex<Idx - 1>, u.tail);
     }
 };
 
-const static std::size_t kNotFound = -1;
-const static std::size_t kAmbiguity = kNotFound - 1;
+const static size_t kNotFound{-1};
+const static size_t kAmbiguity{kNotFound - 1};
 
-constexpr std::size_t ProcessBackward(std::size_t i, std::size_t res, const bool* found,
+constexpr size_t ProcessBackward(size_t i, size_t res, const bool* found,
                                       const bool* found_convertible) {
     if (res == kAmbiguity) {
         return res;
@@ -114,8 +114,8 @@ constexpr std::size_t ProcessBackward(std::size_t i, std::size_t res, const bool
     return res;
 }
 
-template <std::size_t SizeofFound>
-constexpr std::size_t ProcessForward(std::size_t currnet, const bool (&found)[SizeofFound],
+template <size_t SizeofFound>
+constexpr size_t ProcessForward(size_t currnet, const bool (&found)[SizeofFound],
                                      const bool (&convertible)[SizeofFound]) {
     if (currnet == SizeofFound) {
         return kNotFound;
@@ -129,7 +129,7 @@ struct FindExactlyOneChecked {
     constexpr static bool kFound[sizeof...(Type)] = {std::is_same<TargetType, Type>::value...};
     constexpr static bool kFoundConvertible[sizeof...(Type)] = {
         std::is_convertible<TargetType, Type>::value...};
-    constexpr static std::size_t kValue = ProcessForward(0, kFound, kFoundConvertible);
+    constexpr static size_t kValue = ProcessForward(0, kFound, kFoundConvertible);
 
     static_assert(kValue != kNotFound);
     static_assert(kValue != kAmbiguity);
@@ -163,7 +163,7 @@ public:
     // Special member functions
     constexpr Variant() noexcept;
 
-    template <typename T, std::size_t Pos = FindExactlyOne<T, Type...>::kValue>
+    template <typename T, size_t Pos = FindExactlyOne<T, Type...>::kValue>
     Variant& operator=(T&& t) noexcept;
 
 private:
@@ -177,13 +177,13 @@ constexpr Variant<Type...>::Variant() noexcept {
 }
 
 template <typename... Type>
-template <typename T, std::size_t Pos>
+template <typename T, size_t Pos>
 Variant<Type...>& Variant<Type...>::operator=(T&& t) noexcept {
     AssignUnion::AssignHelper<Pos>(std::forward<T>(t), kInPlaceIndex<Pos>, data_);
     return *this;
 }
 
-template <std::size_t Idx, typename T>
+template <size_t Idx, typename T>
 auto&& GenericGet(T&& v) {
     return VariantHelper::GetAlt<Idx>(std::forward<T>(v));
 }
