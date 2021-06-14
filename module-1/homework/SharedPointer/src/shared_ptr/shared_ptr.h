@@ -138,7 +138,7 @@ SharedPtr<T>::SharedPtr(const SharedPtr& other) noexcept
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept 
+SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept
         : value_{other.value_}, counter_{other.counter_} {
     other.value_ = nullptr;
     other.counter_ = nullptr;
@@ -304,7 +304,8 @@ WeakPtr<T>::WeakPtr(const SharedPtr<Y>& other) : value_{other.value_}, counter_{
 }
 
 template <typename T>
-WeakPtr<T>::WeakPtr(const WeakPtr& other) noexcept : value_{other.value_}, counter_{other.counter_} {
+WeakPtr<T>::WeakPtr(const WeakPtr& other) noexcept
+        : value_{other.value_}, counter_{other.counter_} {
     counter_->AddWeak();
 }
 
