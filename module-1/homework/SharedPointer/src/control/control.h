@@ -4,7 +4,7 @@
 
 class SharedCount {
 public:
-    std::size_t Get() const {
+    size_t Get() const {
         return counter_.load();
     }
 
@@ -26,7 +26,7 @@ public:
     }
 
 protected:
-    std::atomic<std::size_t> counter_ = 0;
+    std::atomic<size_t> counter_ {0};
 };
 
 class SharedWeakCount : public SharedCount {
@@ -44,7 +44,7 @@ public:
         return true;
     }
 
-    std::size_t GetWeak() const {
+    size_t GetWeak() const {
         return weak_counter_.load();
     }
 
@@ -53,13 +53,13 @@ public:
     }
 
 protected:
-    std::atomic<std::size_t> weak_counter_ = 0;
+    std::atomic<size_t> weak_counter_{0};
 };
 
 template <typename T, typename Deleter>
 class ControlBlock : public SharedWeakCount {
 public:
-    explicit ControlBlock(T* value) : value_(value) {
+    explicit ControlBlock(T* value) : value_{value} {
         assert(value_ != nullptr);
         Add();
     }
