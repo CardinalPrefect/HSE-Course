@@ -26,7 +26,7 @@ public:
     }
 
 protected:
-    std::atomic<size_t> counter_ {0};
+    std::atomic<size_t> counter_{0};
 };
 
 class SharedWeakCount : public SharedCount {
