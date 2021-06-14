@@ -137,8 +137,7 @@ SharedPtr<T>::SharedPtr(const SharedPtr& other) noexcept : value_{other.value_},
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept
-        : value_{other.value_}, counter_{other.counter_} {
+SharedPtr<T>::SharedPtr(SharedPtr&& other) noexcept : value_{other.value_}, counter_{other.counter_} {
     other.value_ = nullptr;
     other.counter_ = nullptr;
 }
